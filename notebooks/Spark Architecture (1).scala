@@ -406,9 +406,601 @@ display(peopleDF.filter($"lastName" like "Z%").select("lastName", "firstName"))
 
 // COMMAND ----------
 
-import org.apache.spark.sql.functions._
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
 
-peopleDF.select(substring($"lastName", 1, 1).as("lastInitial")).groupBy("lastInitial").count.collect()
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+
 
 // COMMAND ----------
 
@@ -422,6 +1014,1141 @@ peopleDF.select(substring($"lastName", 1, 1).as("lastInitial")).groupBy("lastIni
 // COMMAND ----------
 
 peopleDF.select(substring($"lastName", 1, 2).as("lastTwoInitials")).groupBy("lastTwoInitials").count().show(10000)
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+
 
 // COMMAND ----------
 
@@ -497,6 +2224,385 @@ peopleDF.select(substring($"lastName", 1, 2).as("lastTwoInitials")).groupBy("las
 // COMMAND ----------
 
 peopleDF.select($"firstName", $"lastName").orderBy($"lastName", $"firstName").limit(100).explain()
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+
 
 // COMMAND ----------
 
@@ -507,6 +2613,655 @@ peopleDF.select($"firstName", $"lastName").orderBy($"lastName", $"firstName").li
 
 // TODO
 Try it:
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+
 
 // COMMAND ----------
 
@@ -699,6 +3454,628 @@ val peopleDF4 = peopleDF3.drop("thisYear") // fourth DataFrame
 // COMMAND ----------
 
 display(peopleDF4.groupBy("birthYear").count())
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+
 
 // COMMAND ----------
 
@@ -708,6 +4085,250 @@ display(peopleDF4.groupBy("birthYear").count())
 // COMMAND ----------
 
 peopleDF4.cache()
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+Whole-stage Code Generation
+Whole-stage Code Generation fuses multiple DataFrame operations together into a single Java function, generated on the fly, to improve execution performance. It collapses a query into a single optimized function, compiled with the embedded Janino compiler, which helps optimize access to intermediate data.
+
+The old way of doing things
+Prior to this feature, Spark used a general-purpose iterator-based query processing approach, commonly called the "Volcano model." This approach is general-purpose. To use the example from
+the Databricks Blog post cited below, consider this query:
+
+-- SQL
+SELECT count(*) FROM store_sales WHERE ss_item_sk = 1000
+
+// Scala
+store_sales_df.filter($"ss_item_sk" === 1000).select(count("*")).show()
+
+# Python
+store_sales_df.filter(col("ss_item_sk") == 1000).select(count("*")).show()
+Versions of Spark prior to 2.x would capture the filter operation (the WHERE clause) in a predicate function, and would then evaluate the predicate on each row using general-purpose code something like this:
+
+class Filter(child: Operator, predicate: (Row => Boolean)) extends Operator {
+  def next(): Row = {
+    var current = child.next
+    while (current == null || predicate(current))
+      current = child.next
+    return current;
+  }
+}
+There are definite advantages to this approach, and they're outlined in the blog post.
+
+
 
 // COMMAND ----------
 
