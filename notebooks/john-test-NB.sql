@@ -257,3 +257,106 @@
 
 -- COMMAND ----------
 
+-- MAGIC %md
+-- MAGIC About this notebook
+-- MAGIC Goal: Compute detailed DBUs breakdown
+-- MAGIC DBU usage per day / week
+-- MAGIC Breakdown of DBU usage per user
+-- MAGIC DBU usage per node type
+-- MAGIC The table your_table_here comes from a CSV from https://accounts.cloud.databricks.com
+-- MAGIC Steps:
+-- MAGIC 
+-- MAGIC Download the CSV file from the accounts portal
+-- MAGIC Load the table CSV into the tables UI within Databricks.
+-- MAGIC Update the table name in the first cell, and hit "Run All"
+-- MAGIC Note: Each table reflects 1 month of data.
+
+-- COMMAND ----------
+
+table_name = 'itemizedusage_john'
+ 
+
+-- COMMAND ----------
+
+-- MAGIC %sql select * from itemizedusage_john;
+
+-- COMMAND ----------
+
+-- MAGIC %sql
+-- MAGIC -- Breakdown of usage per user, type, and date in November 
+-- MAGIC select 
+-- MAGIC   createdBy, 
+-- MAGIC   nodeType, 
+-- MAGIC   date, 
+-- MAGIC   sum(DBUs) as total_dbus 
+-- MAGIC from dbus_view 
+-- MAGIC group by createdBy, nodeType, date 
+-- MAGIC order by date asc
+
+-- COMMAND ----------
+
+-- MAGIC %sql
+-- MAGIC -- Breakdown of usage per week of year
+-- MAGIC select 
+-- MAGIC   createdBy, 
+-- MAGIC   week, 
+-- MAGIC   sum(DBUs) as total_dbus 
+-- MAGIC from 
+-- MAGIC   (select *, weekofyear(date) as week from dbus_view ) T
+-- MAGIC group by createdBy, week
+-- MAGIC order by week asc
+
+-- COMMAND ----------
+
+-- MAGIC %sql
+-- MAGIC -- Breakdown of usage per user 
+-- MAGIC select 
+-- MAGIC   createdBy, 
+-- MAGIC   sum(DBUs) as total_dbus 
+-- MAGIC from dbus_view
+-- MAGIC group by createdBy
+-- MAGIC order by total_dbus desc
+
+-- COMMAND ----------
+
+-- MAGIC %sql
+-- MAGIC -- Breakdown of usage by cluster 
+-- MAGIC select 
+-- MAGIC   clusterName, 
+-- MAGIC   sum(DBUs) as total_dbus 
+-- MAGIC from dbus_view
+-- MAGIC group by clusterName
+-- MAGIC order by total_dbus desc
+-- MAGIC limit 25
+
+-- COMMAND ----------
+
+-- MAGIC %sql
+-- MAGIC -- Breakdown of usage by cluster 
+-- MAGIC select 
+-- MAGIC   clusterName, 
+-- MAGIC   sum(DBUs) as total_dbus 
+-- MAGIC from dbus_view
+-- MAGIC where clusterName not like "%job-65%"
+-- MAGIC group by clusterName
+-- MAGIC order by total_dbus desc
+-- MAGIC limit 25
+
+-- COMMAND ----------
+
+-- MAGIC %sql
+-- MAGIC -- Breakdown of usage by date 
+-- MAGIC select 
+-- MAGIC   date,
+-- MAGIC   sum(DBUs) as total_dbus 
+-- MAGIC from dbus_view
+-- MAGIC group by date
+-- MAGIC order by date asc
+
+-- COMMAND ----------
+
+-- MAGIC %sql
+-- MAGIC -- Breakdown of usage by date 
+-- MAGIC select 
+-- MAGIC   sum(DBUs) as total_dbus 
+-- MAGIC from dbus_view
